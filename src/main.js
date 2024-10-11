@@ -1,0 +1,29 @@
+// 46457503-330abda4e6a20c9fb19d2e08a
+// https://pixabay.com/api/
+import { getPhotos } from "./js/pixabay-api";
+import createGalleryItems from "./js/render-functions";
+
+const searchFormEl = document.querySelector('.js-search-form');
+const galleryEl = document.querySelector('.js-gallery');
+
+getPhotos('flowers').then(console.log).catch(console.error);
+
+searchFormEl.addEventListener("submit", handleSearch)
+
+
+function handleSearch(event){
+    event.preventDefault();
+
+const form = event.currentTarget;
+const userQuery = form.elements.user_query.value.trim();
+
+galleryEl.innerHTML = '';
+
+getPhotos(userQuery).then(data => {
+    console.log(data.hits); 
+    const galleryMarkup = createGalleryItems(data.hits);
+    galleryEl.insertAdjacentHTML('beforeend', galleryMarkup); // Додаємо розмітку в DOM
+  })
+  .catch(console.error)
+  .finally(() => form.reset());
+}
