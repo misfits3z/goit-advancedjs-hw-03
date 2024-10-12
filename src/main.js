@@ -24,8 +24,8 @@ const loader = document.querySelector('.loader');
 loader.style.display = 'block';
 
 getPhotos(userQuery).then(data => {
-    console.log(data.hits); 
-    const galleryMarkup = createGalleryItems(data.hits);
+    // console.log(data.hits); 
+    const galleryMarkup = createGalleryItems(data);
     galleryEl.insertAdjacentHTML('beforeend', galleryMarkup); 
 
     initLightbox();
