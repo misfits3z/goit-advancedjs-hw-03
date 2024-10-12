@@ -1,7 +1,8 @@
 // 46457503-330abda4e6a20c9fb19d2e08a
 // https://pixabay.com/api/
 import { getPhotos } from "./js/pixabay-api";
-import createGalleryItems from "./js/render-functions";
+import {createGalleryItems, initLightbox} from "./js/render-functions";
+
 
 const searchFormEl = document.querySelector('.js-search-form');
 const galleryEl = document.querySelector('.js-gallery');
@@ -19,11 +20,19 @@ const userQuery = form.elements.user_query.value.trim();
 
 galleryEl.innerHTML = '';
 
+const loader = document.querySelector('.loader');
+loader.style.display = 'block';
+
 getPhotos(userQuery).then(data => {
     console.log(data.hits); 
     const galleryMarkup = createGalleryItems(data.hits);
-    galleryEl.insertAdjacentHTML('beforeend', galleryMarkup); // Додаємо розмітку в DOM
+    galleryEl.insertAdjacentHTML('beforeend', galleryMarkup); 
+
+    initLightbox();
   })
   .catch(console.error)
-  .finally(() => form.reset());
+  .finally(() => {
+    loader.style.display = 'none';
+    form.reset();
+});
 }
